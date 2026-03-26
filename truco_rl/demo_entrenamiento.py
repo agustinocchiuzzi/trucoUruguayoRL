@@ -15,7 +15,7 @@ import time
 
 def demo():
     print("\n" + "="*70)
-    print("  🤖 DEMOSTRACIÓN RÁPIDA DE ENTRENAMIENTO RL")
+    print("   DEMOSTRACIÓN RÁPIDA DE ENTRENAMIENTO RL")
     print("="*70)
     print("""
   En esta demostración vas a:
@@ -23,7 +23,7 @@ def demo():
   2. Evaluar su progreso
   3. Jugar contra él
   
-  ⏱️  Tiempo total: ~2-3 minutos
+    Tiempo total: ~2-3 minutos
   """)
     print("="*70)
     
@@ -35,7 +35,7 @@ def demo():
     time.sleep(1)
     
     env = TrucoEnv(opponent="random")
-    print("     ✅ Entorno creado")
+    print("      Entorno creado")
     print(f"     - Observation space: {env.observation_space}")
     print(f"     - Action space: {env.action_space}")
     
@@ -43,7 +43,7 @@ def demo():
     # PASO 2: Crear modelo
     # ─────────────────────────────────────────────
     
-    print("\n  🧠 PASO 2: Inicializando modelo PPO...")
+    print("\n   PASO 2: Inicializando modelo PPO...")
     time.sleep(1)
     
     model = PPO(
@@ -62,7 +62,7 @@ def demo():
         device="cpu"
     )
     
-    print("     ✅ Modelo creado")
+    print("      Modelo creado")
     print("""     Configuración:
      - Algoritmo: PPO (Proximal Policy Optimization)
      - Red neural: 2 capas de 256 neuronas
@@ -75,7 +75,7 @@ def demo():
     # PASO 3: Obtener baseline (modelo sin entrenar)
     # ─────────────────────────────────────────────
     
-    print("  📊 PASO 3: Evaluando modelo SIN entrenar...")
+    print("   PASO 3: Evaluando modelo SIN entrenar...")
     time.sleep(1)
     
     env_eval = TrucoEnv(opponent="random")
@@ -99,27 +99,27 @@ def demo():
             print(f"     [{ep + 1:>3}/{n_test}] {wins_before:>2} victorias hasta ahora")
     
     wr_before = wins_before / n_test
-    print(f"\n     ✅ Win rate inicial: {wr_before:.1%} ({wins_before}/{n_test})")
+    print(f"\n      Win rate inicial: {wr_before:.1%} ({wins_before}/{n_test})")
     print(f"        (Sin entrenar, esperamos ~50%)")
     
     # ─────────────────────────────────────────────
     # PASO 4: Entrenar
     # ─────────────────────────────────────────────
     
-    print("\n  ⏳ PASO 4: Entrenando por 10,000 timesteps...")
+    print("\n   PASO 4: Entrenando por 10,000 timesteps...")
     time.sleep(1)
     
     start_time = time.time()
     model.learn(total_timesteps=10_000, progress_bar=True)
     train_time = time.time() - start_time
     
-    print(f"\n     ✅ Entrenamiento completado en {train_time:.1f} segundos")
+    print(f"\n      Entrenamiento completado en {train_time:.1f} segundos")
     
     # ─────────────────────────────────────────────
     # PASO 5: Evaluar modelo entrenado
     # ─────────────────────────────────────────────
     
-    print("\n  📊 PASO 5: Evaluando modelo ENTRENADO...")
+    print("\n   PASO 5: Evaluando modelo ENTRENADO...")
     time.sleep(1)
     
     wins_after = 0
@@ -141,7 +141,7 @@ def demo():
             print(f"     [{ep + 1:>3}/{n_test}] {wins_after:>2} victorias hasta ahora")
     
     wr_after = wins_after / n_test
-    print(f"\n     ✅ Win rate final: {wr_after:.1%} ({wins_after}/{n_test})")
+    print(f"\n      Win rate final: {wr_after:.1%} ({wins_after}/{n_test})")
     
     # ─────────────────────────────────────────────
     # RESUMEN
@@ -150,7 +150,7 @@ def demo():
     improvement = (wr_after - wr_before) * 100
     
     print("\n" + "="*70)
-    print("  📈 RESUMEN")
+    print("   RESUMEN")
     print("="*70)
     print(f"  Win rate ANTES:     {wr_before:.1%}  ({wins_before}/{n_test} manos)")
     print(f"  Win rate DESPUÉS:   {wr_after:.1%}  ({wins_after}/{n_test} manos)")
@@ -159,11 +159,11 @@ def demo():
     print("="*70)
     
     if improvement > 0:
-        print(f"\n  ✅ ¡El modelo APRENDIÓ! Mejoró un {improvement:.1f}%")
+        print(f"\n   ¡El modelo APRENDIÓ! Mejoró un {improvement:.1f}%")
         print(f"     Con más tiempo de entrenamiento (100k-500k timesteps),")
         print(f"     alcanzaría un win rate de 65-75%+")
     else:
-        print(f"\n  ℹ️  El modelo aún no mejora significativamente.")
+        print(f"\n  ℹ  El modelo aún no mejora significativamente.")
         print(f"     Necesita más tiempo de entrenamiento.")
     
     # ─────────────────────────────────────────────
@@ -171,7 +171,7 @@ def demo():
     # ─────────────────────────────────────────────
     
     print("\n" + "="*70)
-    print("  🚀 PRÓXIMOS PASOS")
+    print("   PRÓXIMOS PASOS")
     print("="*70)
     print("""
   1. Entrenar un modelo más grande:
@@ -194,16 +194,16 @@ def demo():
     
     # Guardar modelo demo
     model.save("demo_model_untrained")
-    print(f"\n  💾 Modelo guardado como: demo_model_untrained.zip")
+    print(f"\n   Modelo guardado como: demo_model_untrained.zip")
 
 
 if __name__ == "__main__":
     try:
         demo()
     except KeyboardInterrupt:
-        print("\n\n  ⚠️  Demostración interrumpida por usuario.")
+        print("\n\n    Demostración interrumpida por usuario.")
     except Exception as e:
-        print(f"\n  ❌ Error: {e}")
+        print(f"\n   Error: {e}")
         print("""
   Asegúrate de:
   1. Estar en la carpeta correcta: truco_rl/

@@ -20,9 +20,9 @@ class TrainedRLAgent:
     def __init__(self, model_path):
         try:
             self.model = PPO.load(model_path)
-            print(f"  ✅ Modelo cargado: {model_path}")
+            print(f"   Modelo cargado: {model_path}")
         except FileNotFoundError:
-            print(f"  ❌ Model no encontrado: {model_path}.zip")
+            print(f"   Model no encontrado: {model_path}.zip")
             sys.exit(1)
         
         # Importar el entorno para obtener la función de codificación
@@ -108,10 +108,10 @@ def play_with_trained_agent(model_path="truco_agent"):
     """Juego contra agente entrenado."""
     
     clear()
-    header("🤖  TRUCO URUGUAYO vs AGENTE ENTRENADO")
+    header("  TRUCO URUGUAYO vs AGENTE ENTRENADO")
     print(f"\n  📦 Modelo:  {model_path}")
-    print(f"  🤖 J1:     RL Agent (entrenado)")
-    print(f"  🧑 J2:     Tú (manual)")
+    print(f"   J1:     RL Agent (entrenado)")
+    print(f"   J2:     Tú (manual)")
     print(f"\n  Partida a {Truco.POINTS_TO_WIN} puntos.\n")
     
     input("  Presioná ENTER para comenzar...")
@@ -126,8 +126,8 @@ def play_with_trained_agent(model_path="truco_agent"):
     clear()
     winner = truco.game_winner()
     header("🏆  FIN DE LA PARTIDA")
-    print(f"\n  🎉  ¡{truco.player_name(winner - 1)} gana!")
-    print(f"\n  📊  {truco.score_str()}")
+    print(f"\n    ¡{truco.player_name(winner - 1)} gana!")
+    print(f"\n    {truco.score_str()}")
     line()
 
 
@@ -140,7 +140,7 @@ def play_hand(agent: TrainedRLAgent, truco: Truco):
     
     if truco.flowers_declared:
         flores = [truco.player_name(p) for p in truco.flowers_declared]
-        msg = f"🌸  ¡Tiene(n) flor: {', '.join(flores)}!"
+        msg = f"  ¡Tiene(n) flor: {', '.join(flores)}!"
     
     while not truco.hand_over:
         show_state(truco, msg)
@@ -148,7 +148,7 @@ def play_hand(agent: TrainedRLAgent, truco: Truco):
         
         # Turno del agente
         if truco.turn == 0:
-            print(f"\n  🤖  Agente entrenado está pensando...\n")
+            print(f"\n    Agente entrenado está pensando...\n")
             pause()
             
             action = agent_obj.decide_action(truco)
@@ -156,7 +156,7 @@ def play_hand(agent: TrainedRLAgent, truco: Truco):
             if action[0] == 'play_card':
                 res = truco.play_card(0, action[1])
                 if res['ok']:
-                    msg = f"🤖  Agente juega: {fmt_card(res['card'])}"
+                    msg = f"  Agente juega: {fmt_card(res['card'])}"
                     if res.get('baza_done'):
                         w = res.get('baza_winner', 'empate')
                         msg += f"\n  ⚔️  Baza: {w}"
@@ -212,7 +212,7 @@ def play_hand(agent: TrainedRLAgent, truco: Truco):
                 continue
             
             if not res['ok']:
-                msg = f"❌  {res['msg']}"
+                msg = f"  {res['msg']}"
                 pause()
                 continue
             
@@ -220,18 +220,18 @@ def play_hand(agent: TrainedRLAgent, truco: Truco):
             
             if res.get('hand_over'):
                 show_state(truco, msg)
-                print(f"\n  📊  {truco.score_str()}")
+                print(f"\n    {truco.score_str()}")
                 pause()
                 return
         
         if truco.hand_over:
             show_state(truco, msg)
-            print(f"\n  📊  {truco.score_str()}")
+            print(f"\n    {truco.score_str()}")
             pause()
             return
     
     show_state(truco, msg)
-    print(f"\n  📊  {truco.score_str()}")
+    print(f"\n    {truco.score_str()}")
     pause()
 
 

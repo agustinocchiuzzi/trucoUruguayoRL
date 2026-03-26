@@ -63,20 +63,20 @@ def entrenar(timesteps=500_000, eval_freq=10_000, nombre_modelo="truco_agent"):
     """Entrenar un nuevo agente."""
     
     print("\n" + "="*70)
-    print("  🤖 ENTRENAMIENTO DEL AGENTE RL - TRUCO URUGUAYO")
+    print("   ENTRENAMIENTO DEL AGENTE RL - TRUCO URUGUAYO")
     print("="*70)
-    print(f"  📈 Timesteps total:        {timesteps:,}")
-    print(f"  📊 Evaluación cada:        {eval_freq:,} timesteps")
-    print(f"  💾 Modelo guardado como:   {nombre_modelo}.zip")
-    print(f"  🎮 Oponente:               Aleatorio (estrategia aleatoria)")
+    print(f"   Timesteps total:        {timesteps:,}")
+    print(f"   Evaluación cada:        {eval_freq:,} timesteps")
+    print(f"   Modelo guardado como:   {nombre_modelo}.zip")
+    print(f"   Oponente:               Aleatorio (estrategia aleatoria)")
     print("="*70)
     
     # Crear entorno
-    print("\n  ⏳ Creando entorno...")
+    print("\n   Creando entorno...")
     env = TrucoEnv(opponent="random")
     
     # Crear modelo PPO con buenos hiperparámetros
-    print("  ⏳ Inicializando modelo PPO...")
+    print("   Inicializando modelo PPO...")
     model = PPO(
         "MlpPolicy",
         env,
@@ -96,7 +96,7 @@ def entrenar(timesteps=500_000, eval_freq=10_000, nombre_modelo="truco_agent"):
     
     callback = TrucoTrainingCallback(eval_freq=eval_freq, verbose=1)
     
-    print("\n  ▶️  Iniciando entrenamiento...\n")
+    print("\n   Iniciando entrenamiento...\n")
     
     try:
         model.learn(
@@ -105,12 +105,12 @@ def entrenar(timesteps=500_000, eval_freq=10_000, nombre_modelo="truco_agent"):
             progress_bar=True
         )
     except KeyboardInterrupt:
-        print("\n\n  ⚠️  Entrenamiento interrumpido por usuario.")
+        print("\n\n    Entrenamiento interrumpido por usuario.")
     
     # Guardar modelo
     ruta_modelo = Path(nombre_modelo)
     model.save(str(ruta_modelo))
-    print(f"\n  ✅ Modelo guardado: {ruta_modelo}.zip")
+    print(f"\n  Modelo guardado: {ruta_modelo}.zip")
     
     return model
 
@@ -119,7 +119,7 @@ def evaluar(nombre_modelo="truco_agent", n_manos=500):
     """Evaluar un modelo contra oponente aleatorio."""
     
     print("\n" + "="*70)
-    print("  📊 EVALUACIÓN DEL MODELO")
+    print("  EVALUACIÓN DEL MODELO")
     print("="*70)
     print(f"  Modelo:        {nombre_modelo}")
     print(f"  Manos:         {n_manos}")
@@ -129,7 +129,7 @@ def evaluar(nombre_modelo="truco_agent", n_manos=500):
     try:
         model = PPO.load(nombre_modelo)
     except FileNotFoundError:
-        print(f"  ❌ No se encontró el modelo: {nombre_modelo}.zip")
+        print(f"  No se encontró el modelo: {nombre_modelo}.zip")
         return
     
     env = TrucoEnv(opponent="random")
@@ -139,8 +139,8 @@ def evaluar(nombre_modelo="truco_agent", n_manos=500):
     derrotas = 0
     puntos_ganados = 0
     puntos_perdidos = 0
-    
-    print(f"\n  ⏳ Evaluando {n_manos} manos...\n")
+
+    print(f"\n  Evaluando {n_manos} manos...\n")
     
     for mano_num in range(n_manos):
         obs, _ = env.reset()
@@ -174,14 +174,14 @@ def evaluar(nombre_modelo="truco_agent", n_manos=500):
     wr_final = victorias / n_manos
     
     print("\n" + "="*70)
-    print(f"  📈 RESULTADOS FINALES")
+    print(f"  RESULTADOS FINALES")
     print("="*70)
     print(f"  Victorias:     {victorias:>4}  ({victorias/n_manos:.1%})")
     print(f"  Derrotas:      {derrotas:>4}  ({derrotas/n_manos:.1%})")
     print(f"  Empates:       {empates:>4}  ({empates/n_manos:.1%})")
     print(f"  Puntos netos:  {puntos_ganados - puntos_perdidos:>+4}")
     print("="*70)
-    print(f"\n  ✅ Win Rate vs Aleatorio: {wr_final:.1%}")
+    print(f"\n  Win Rate vs Aleatorio: {wr_final:.1%}")
     print(f"     (Un agente aleatorio = 50%)")
     print(f"     (Bien entrenado: 65-75%+)")
     print()
@@ -191,14 +191,14 @@ def selfplay(nombre_base="truco_agent", timesteps=100_000, n_eval=200):
     """Entrenar mediante self-play: nueva versión vs anterior."""
     
     print("\n" + "="*70)
-    print("  🔄 SELF-PLAY: Entrenar contra versión anterior")
+    print("  SELF-PLAY: Entrenar contra versión anterior")
     print("="*70)
     
     # Cargar modelo anterior como oponente
     try:
         model_anterior = PPO.load(nombre_base)
     except FileNotFoundError:
-        print(f"  ❌ No se encontró: {nombre_base}.zip")
+        print(f"  No se encontró: {nombre_base}.zip")
         return
     
     print(f"  Oponente:      {nombre_base}")
@@ -210,13 +210,13 @@ def selfplay(nombre_base="truco_agent", timesteps=100_000, n_eval=200):
     env = TrucoEnv(opponent=model_anterior)
     model = PPO.load(nombre_base, env=env)
     
-    print(f"\n  ⏳ Entrenando {timesteps:,} timesteps vs versión anterior...\n")
+    print(f"\n  Entrenando {timesteps:,} timesteps vs versión anterior...\n")
     
     callback = TrucoTrainingCallback(eval_freq=timesteps//10, verbose=1)
     model.learn(total_timesteps=timesteps, callback=callback, progress_bar=True)
     
     # Evaluar contra modelo anterior
-    print(f"\n  📊 Evaluando nuevo modelo vs anterior...")
+    print(f"\n  Evaluando nuevo modelo vs anterior...")
     env_eval = TrucoEnv(opponent=model_anterior)
     
     victorias = 0
@@ -236,16 +236,16 @@ def selfplay(nombre_base="truco_agent", timesteps=100_000, n_eval=200):
     
     if wr > 0.52:  # Mejoró al menos 2%
         model.save(nombre_base)
-        print(f"  ✅ Nuevo modelo guardado (mejoró)")
+        print(f"  Nuevo modelo guardado (mejoró)")
     else:
-        print(f"  ⚠️  Modelo no mejoró, se mantiene anterior")
+        print(f"   Modelo no mejoró, se mantiene anterior")
 
 
 if __name__ == "__main__":
     import argparse
     
     parser = argparse.ArgumentParser(
-        description="🎮 Entrenamiento avanzado RL para Truco Uruguayo",
+        description=" Entrenamiento avanzado RL para Truco Uruguayo",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Ejemplos de uso:
@@ -282,5 +282,5 @@ Ejemplos de uso:
         selfplay(args.selfplay, args.steps, args.n_eval)
     else:
         entrenar(args.steps, args.eval_freq, args.nombre)
-        print("\n  ▶️  Ahora evaluando modelo...\n")
+        print("\n   Ahora evaluando modelo...\n")
         evaluar(args.nombre, args.n_eval)

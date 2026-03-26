@@ -100,7 +100,7 @@ def train(total_timesteps=300_000, save_path="truco_ppo"):
  
     # Guardar modelo
     model.save(save_path)
-    print(f"\n  ✅ Modelo guardado en '{save_path}.zip'")
+    print(f"\n  Modelo guardado en '{save_path}.zip'")
  
     return model
  
@@ -174,9 +174,9 @@ def self_play_iteration(model_path="truco_ppo", timesteps=100_000):
  
     if wr > 0.52:  # mejora mínima del 2%
         new_model.save(model_path)
-        print(f"  ✅ Nuevo modelo guardado (mejoró).")
+        print(f"   Nuevo modelo guardado (mejoró).")
     else:
-        print(f"  ⚠️  Modelo no mejoró, se mantiene el anterior.")
+        print(f"    Modelo no mejoró, se mantiene el anterior.")
  
     return wr
  
